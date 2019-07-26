@@ -19,7 +19,7 @@ header('Content-Type: application/json');
 $ret = [
     'result' => 'OK',
 ];
-print json_encode($ret);
+print json_encode( $ret);
 require dirname(__DIR__).'/config/bootstrap.php';
 
 if ($_SERVER['APP_DEBUG']) {
