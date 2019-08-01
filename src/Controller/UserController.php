@@ -38,7 +38,7 @@ class UserController extends AbstractController
         if(!$errors)
         {
             $expireTime = time() + 86400;
-            $tokenPayload = ['exp'  => $expireTime];
+            $tokenPayload = ['exp' => $expireTime];
             $jwt = JWT::encode($tokenPayload, getenv("JWT_SECRET"));
             $encodedPassword = $passwordEncoder->encodePassword($user, $password);
             $user->setName($name);
