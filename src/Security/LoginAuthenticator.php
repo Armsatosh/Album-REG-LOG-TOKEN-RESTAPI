@@ -65,10 +65,14 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
         $data = json_decode($request->getContent(), true);;
         $currentEmail = $data['email'];
         $expireTime = time() + 86400;
-        $tokenPayload = [ 'exp'  => $expireTime   ];
+        $tokenPayload = [
+               'exp'  => $expireTime
+        ];
         $jwt = JWT::encode($tokenPayload, getenv("JWT_SECRET"));
-        $this->em->getRepository(User::class)->fildeUp($jwt ,$currentEmail,$expireTime);
+        $this->em->getRepository(User::class)->fildeUp($jwt, $currentEmail, $expireTime);
         $this->em->flush();
+
+
         return new JsonResponse([
             'token' => $jwt,
         ]);

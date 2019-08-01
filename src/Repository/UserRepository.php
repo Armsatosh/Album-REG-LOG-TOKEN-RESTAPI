@@ -19,18 +19,18 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function fildeUp($jwt ,$currentEmail,$expireTime): ?User
+    public function fildeUp($jwt, $currentEmail, $expireTime): ?User
     {
         return $this->createQueryBuilder('u')
             ->update()
-            ->andWhere('u.email = :email')
-            ->set('u.token'  ,    ':token')
-            ->set('u.status' ,    ':status')
-            ->set('u.expiretime' ,    ':time')
-            ->setParameter('time', 1)
-            ->setParameter('status', 1)
-            ->setParameter('email', $currentEmail)
-            ->setParameter('token' , $jwt)
+            ->andWhere('u.email =           :email')
+            ->set('u.token'  ,              ':token')
+            ->set('u.status' ,              ':status')
+            ->set('u.expire' ,              ':limit')
+            ->setParameter('limit',     $expireTime)
+            ->setParameter('status',    1)
+            ->setParameter('email',     $currentEmail)
+            ->setParameter('token' ,    $jwt)
             ->getQuery()
             ->getOneOrNullResult();
 

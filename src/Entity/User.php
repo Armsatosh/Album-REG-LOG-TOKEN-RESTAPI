@@ -34,39 +34,18 @@ class User implements UserInterface
     private $token;
 
     /**
-     * @ORM\Column(type="string", length=280)
+     * @ORM\Column(type="integer", length=180)
      * @Groups ( "api" )
      */
+
     private $status;
-    /**
-     * @ORM\Column(type="string", length=280)
-     * @Groups ( "api" )
-     */
-    private $expiretime;
 
     /**
-     * @ORM\Column(type="time", length=180)
+     * @ORM\Column(type="string", length=180, unique=true)
      * @Groups ( "api" )
      */
     private $email;
 
-    /**
-     * @return mixed
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param mixed $status
-     * @return User
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-        return $this;
-    }
 
     /**
      * @ORM\Column(type="json")
@@ -79,6 +58,11 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $expire;
 
 
 
@@ -120,31 +104,37 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getExpiretime()
+    public function getStatus()
     {
-        return $this->expiretime;
+        return $this->status;
     }
 
     /**
-     * @param mixed $expiretime
+     * @param mixed $status
      * @return User
      */
-    public function setExpiretime($expiretime)
+    public function setStatus($status)
     {
-        $this->expiretime = $expiretime;
+        $this->status = $status;
         return $this;
     }
 
 
-    public function getEmail(): ?string
+    /**
+     * @return mixed
+     */
+    public function getEmail()
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    /**
+     * @param mixed $email
+     * @return User
+     */
+    public function setEmail($email)
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -209,4 +199,24 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getExpire(): ?int
+    {
+        return $this->expire;
+    }
+
+    /**
+     * @param int $expire
+     * @return User
+     */
+    public function setExpire(int $expire): self
+    {
+        $this->expire = $expire;
+
+        return $this;
+    }
+
 }
