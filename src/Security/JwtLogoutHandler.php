@@ -8,7 +8,7 @@ class JwtLogoutHandler implements LogoutSuccessHandlerInterface
 {
     public function onLogoutSuccess(Request $request)
     {
-        $token = $request->request->all();
+        $token = $request->request->get("token");
         $response = new JsonResponse(['result777' => $token]);
        // $response->headers->clearCookie("jwt");
         return $response;
