@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use phpDocumentor\Reflection\Types\Object_;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,7 +20,42 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function fildeUp($jwt, $currentEmail, $expireTime): ?User
+    public function filideUp($jwt, $currentEmail, $expireTime): ? int
+    {
+        return $this->createQueryBuilder('u')
+            ->update()
+            ->andWhere('u.email =           :email')
+            ->set('u.token'  ,              ':token')
+            ->set('u.status' ,              ':status')
+            ->set('u.expire' ,              ':limit')
+            ->setParameter('limit',     $expireTime)
+            ->setParameter('status',    1)
+            ->setParameter('email',     $currentEmail)
+            ->setParameter('token' ,    $jwt)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+    }
+
+    public function findUserByToken($value)
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.token = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findNameByEmail($value)
+    {
+        return $this->createQueryBuilder('j')
+            ->andWhere('j.email = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function removeToken($jwt, $currentEmail, $expireTime): ? int
     {
         return $this->createQueryBuilder('u')
             ->update()

@@ -34,7 +34,6 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
     }
     public function getCredentials(Request $request)
     {
-
         $data                       = json_decode($request->getContent(), true);
         return [
             $email                  =   $data['email'] ,
@@ -44,7 +43,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        return $userProvider -> loadUserByUsername ( $credentials[0]) ;
+        return $userProvider -> loadUserByUsername ($credentials[0]) ;
     }
 
     public function checkCredentials($credentials, UserInterface $user)
@@ -59,9 +58,8 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
         ], 400);
     }
 
-    public function onAuthenticationSuccess( Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess( Request $request, TokenInterface $token,   $providerKey)
     {
-
         $data = json_decode($request->getContent(), true);;
         $currentEmail = $data['email'];
         $expireTime = time() + 86400;
@@ -69,12 +67,22 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
                'exp'  => $expireTime
         ];
         $jwt = JWT::encode($tokenPayload, getenv("JWT_SECRET"));
-        $this->em->getRepository(User::class)->fildeUp($jwt, $currentEmail, $expireTime);
+        $this->em->getRepository(User::class)->filideUp($jwt, $currentEmail, $expireTime);
         $this->em->flush();
+        $name = $this->em->getRepository(User::class)->findNameByEmail($currentEmail)->getName();
+        $user = new User();
+        $path = $user->getFiles();
 
 
+
+        $desirableFilePathes = [];
+        foreach($path as $file) {
+            $desirableFilePathes[] = $file->getImage();
+        }
         return new JsonResponse([
             'token' => $jwt,
+            'name'  => $name,
+            'desirableFilePathes'=> json_encode($desirableFilePathes),
         ]);
 
     }
