@@ -19,9 +19,20 @@ class FileRepository extends ServiceEntityRepository
         parent::__construct($registry, File::class);
     }
 
+    public function findFileByImageId($value): ?File
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
     // /**
     //  * @return File[] Returns an array of File objects
     //  */
+
     /*
     public function findByExampleField($value)
     {
@@ -36,15 +47,4 @@ class FileRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?File
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

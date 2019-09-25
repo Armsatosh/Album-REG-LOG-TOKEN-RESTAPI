@@ -70,19 +70,9 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
         $this->em->getRepository(User::class)->filideUp($jwt, $currentEmail, $expireTime);
         $this->em->flush();
         $name = $this->em->getRepository(User::class)->findNameByEmail($currentEmail)->getName();
-        $user = new User();
-        $path = $user->getFiles();
-
-
-
-        $desirableFilePathes = [];
-        foreach($path as $file) {
-            $desirableFilePathes[] = $file->getImage();
-        }
         return new JsonResponse([
             'token' => $jwt,
             'name'  => $name,
-            'desirableFilePathes'=> json_encode($desirableFilePathes),
         ]);
 
     }

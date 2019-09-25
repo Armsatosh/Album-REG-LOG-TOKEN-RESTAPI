@@ -17,7 +17,7 @@ class FileUploader
     {
         try {
 
-            $image->move($uploadDir.\DIRECTORY_SEPARATOR.$userName, mt_rand(1,1000).$filename);
+            $image->move($uploadDir.\DIRECTORY_SEPARATOR.$userName, $filename);
         } catch (FileException $e){
 
             $this->logger->error('failed to upload image: ' . $e->getMessage());

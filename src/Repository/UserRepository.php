@@ -55,18 +55,16 @@ class UserRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function removeToken($jwt, $currentEmail, $expireTime): ? int
+    public function removeToken($jwt): ? int
     {
-        return $this->createQueryBuilder('u')
+        return $this->createQueryBuilder('t')
             ->update()
-            ->andWhere('u.email =           :email')
-            ->set('u.token'  ,              ':token')
-            ->set('u.status' ,              ':status')
-            ->set('u.expire' ,              ':limit')
-            ->setParameter('limit',     $expireTime)
-            ->setParameter('status',    1)
-            ->setParameter('email',     $currentEmail)
-            ->setParameter('token' ,    $jwt)
+            ->andWhere('t.token =  :token')
+            ->set('t.token'  ,    ':reToken')
+            ->set('t.expire' ,    ':expire')
+            ->setParameter('token',     $jwt)
+            ->setParameter('reToken' ,    "")
+            ->setParameter('expire' ,    "")
             ->getQuery()
             ->getOneOrNullResult();
 
